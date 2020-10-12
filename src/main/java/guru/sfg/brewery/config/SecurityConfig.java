@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder passwordEncoder(){
+        // can chose 3 different password encodings for each user.
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
@@ -43,14 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
-                .password("{bcrypt}$2a$10$7tYAvVL2/KwcQTcQywHIleKueg4ZK7y7d44hKyngjTwHCDlesxdla")
+                .password("{bcrypt}$2a$10$E843amHBPxvynwjePrKm.eBtoG01iFrv7ii8xqssuavYRQ8JSoiWC")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("{sha256}1296cefceb47413d3fb91ac7586a4625c33937b4d3109f5a4dd96c79c46193a029db713b96006ded")
+                .password("{sha256}7687ff50cba755c994d5b775d00d0f6299a3e971d76d82bf2f255957e571b88009bd410a12367ad1")
                 .roles("USER");
 
-        auth.inMemoryAuthentication().withUser("scott").password("{ldap}{SSHA}A10yuLOEGbSTbHl7csQHk7X0X3rwrqdmBomRsA==").roles("CUSTOMER");
+        auth.inMemoryAuthentication().withUser("scott").password("{ldap}{SSHA}00IHqhEN5puPc2W+QU90CP5oxGXCMu/qbwd/3A==").roles("CUSTOMER");
     }
 
     //    @Override
