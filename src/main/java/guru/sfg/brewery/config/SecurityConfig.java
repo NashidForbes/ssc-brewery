@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("a1eefa88426a7ed2cd98098f38406e1ee3bd8ed44bda2decb0beb97411570fc904f3a02d2ef2ad28")
+                .password("ba500b818faef12b156be57e4f94ba24a0e547df1027aa7841c55ffe8173c01b1f72f5b1c60f3b6b")
                 .roles("USER");
 
         auth.inMemoryAuthentication().withUser("scott").password("tiger").roles("CUSTOMER");
