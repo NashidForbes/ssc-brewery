@@ -16,6 +16,7 @@ public class BeerControllerIT extends BaseIT{
 
     @Test
     void initCreationForm() throws Exception {
+        // Password encoding is set via the Spring configuration i.e. SecurityConfig
         mockMvc.perform(get("/beers/new").with(httpBasic("user", "password")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/createBeer"))

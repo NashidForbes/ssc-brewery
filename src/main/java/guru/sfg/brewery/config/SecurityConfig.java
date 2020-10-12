@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -18,20 +18,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
+    PasswordEncoder passwordEncoder() {
+        //return NoOpPasswordEncoder.getInstance();
+        return new LdapShaPasswordEncoder();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-                http
+        http
                 .authorizeRequests(authorize -> {
                     authorize
-                            .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
+                            .antMatchers("/", "/webjars/**", "/login", "/resources/**")
+                            .permitAll()
                             .antMatchers("/beers/find", "/beers*").permitAll()
                             .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
-                            .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll();
-                } )
+                            .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}")
+                            .permitAll();
+                })
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
@@ -43,46 +46,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
-                .password("guru")
+                .password("{SSHA}2iX6IY88ywpblZsUGianjEPmc2FHhsHRSdtiLg==")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("password")
+                .password("{SSHA}2iX6IY88ywpblZsUGianjEPmc2FHhsHRSdtiLg==")
                 .roles("USER");
-
-        auth.inMemoryAuthentication().withUser("scott").password("tiger").roles("CUSTOMER");
+        auth.inMemoryAuthentication().withUser("scott").password("tiger")
+                .roles("CUSTOMER");
     }
-
     //    @Override
-//    @Bean
-//    protected UserDetailsService userDetailsService() {
-//        UserDetails admin = User.withDefaultPasswordEncoder()
-//                .username("spring")
-//                .password("guru")
-//                .roles("ADMIN")
-//                .build();
-//
-//        UserDetails user = User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("password")
-//                .roles("USER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(admin, user);
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //    @Bean
+    //    protected UserDetailsService userDetailsService() {
+    //        UserDetails admin = User.withDefaultPasswordEncoder()
+    //                .username("spring")
+    //                .password("guru")
+    //                .roles("ADMIN")
+    //                .build();
+    //
+    //        UserDetails user = User.withDefaultPasswordEncoder()
+    //                .username("user")
+    //                .password("password")
+    //                .roles("USER")
+    //                .build();
+    //
+    //        return new InMemoryUserDetailsManager(admin, user);
+    //    }
 
 
 }
