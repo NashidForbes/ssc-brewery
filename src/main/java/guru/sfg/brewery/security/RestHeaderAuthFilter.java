@@ -82,6 +82,7 @@ public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter
                     + authResult);
         }
 
+        // Sets authorization context within Spring Security
         SecurityContextHolder.getContext().setAuthentication(authResult);
 
     }
