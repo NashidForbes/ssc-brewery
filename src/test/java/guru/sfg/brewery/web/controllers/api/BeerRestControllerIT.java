@@ -15,8 +15,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BeerRestControllerIT extends BaseIT {
 
     @Test
-    void deleteBeer() throws Exception {
+    void deleteBeeer() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
+                // Api-Key is user name, Api-Secret is password
         .header("Api-Key", "spring").header("Api-Secret", "guru"))
         .andExpect(status().isOk());
     }
