@@ -34,7 +34,7 @@ public class RestUrlAuthFilter extends
         super(requiresAuthenticationRequestMatcher);
     }
 
-     @Override
+/*     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response, FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
@@ -47,13 +47,13 @@ public class RestUrlAuthFilter extends
 
         SecurityContextHolder.getContext().setAuthentication(authResult);
 
-    }
+    }*/
 
-    private String getPassword(HttpServletRequest request) {
+    protected String getPassword(HttpServletRequest request) {
         return request.getParameter("apiSecret");
     }
 
-    private String getUsername(HttpServletRequest request) {
+    protected String getUsername(HttpServletRequest request) {
         return request.getParameter("apiKey");
     }
 }
