@@ -1,8 +1,10 @@
 package guru.sfg.brewery.config;
 
+import guru.sfg.brewery.security.JpaUserDetailsService;
 import guru.sfg.brewery.security.RestHeaderAuthFilter;
 import guru.sfg.brewery.security.RestUrlAuthFilter;
 import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -67,9 +69,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Override
+/*    @Autowired
+    JpaUserDetailsService jpaUserDetailsService;*/
+
+ /*   @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
+
+        auth.userDetailsService(this.jpaUserDetailsService).passwordEncoder(passwordEncoder());
+*/
+
+ /*       auth.inMemoryAuthentication()
                 .withUser("spring")
                 .password("{bcrypt}$2a$10$7tYAvVL2/KwcQTcQywHIleKueg4ZK7y7d44hKyngjTwHCDlesxdla")
                 .roles("ADMIN")
@@ -79,7 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("USER");
 
         auth.inMemoryAuthentication().withUser("scott").password("{bcrypt10}$2a$10$jv7rEbL65k4Q3d/mqG5MLuLDLTlg5oKoq2QOOojfB3e2awo.nlmgu").roles("CUSTOMER");
-    }
+   }*/
 
     //    @Override
 //    @Bean
