@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 /*
 @WebMvcTest  does not include our implmement JpaUserDetailsService in SpringBoot context
+so we need to use SpringBootTest
 */
 @SpringBootTest
 public class BeerControllerIT extends BaseIT{
