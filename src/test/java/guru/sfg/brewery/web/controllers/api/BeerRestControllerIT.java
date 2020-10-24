@@ -22,6 +22,7 @@ public class BeerRestControllerIT extends BaseIT {
                 .andExpect(status().is2xxSuccessful());
     }
 
+
     @Test
     void deleteBeerHttpBasicUserRole() throws Exception{
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
@@ -34,6 +35,32 @@ public class BeerRestControllerIT extends BaseIT {
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
                 .with(httpBasic("scott", "tiger")))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void listBreweriesJsonAnonymous() throws Exception{
+        mockMvc.perform(get("/brewery/api/v1/breweries"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void listBreweriesAnonymous() throws Exception{
+        mockMvc.perform(get("/brewery/breweries"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void listBreweriesWithCustomerRole() throws Exception{
+        mockMvc.perform(get("/brewery/api/v1/breweries")
+                .with(httpBasic("scott", "tiger")))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    void listBreweriesWithOutCustomerRole() throws Exception{
+        mockMvc.perform(get("/brewery/api/v1/breweries")
+                .with(httpBasic("user", "password")))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
