@@ -75,10 +75,59 @@ public class BeerRestControllerIT extends BaseIT {
     }
 
     @Test
-    void findBeers() throws Exception{
-        mockMvc.perform(get("/api/v1/beer/"))
+    void findBeersRoleAdmin() throws Exception{
+        mockMvc.perform(get("/beers/find/")
+                .with(httpBasic("spring", "guru")))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void findBeersRoleCustomer() throws Exception{
+        mockMvc.perform(get("/beers/find/")
+                .with(httpBasic("scott", "tiger")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findBeersRoleUser() throws Exception{
+        mockMvc.perform(get("/beers/find/")
+                .with(httpBasic("user", "password")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findBeersAnonymous() throws Exception{
+        mockMvc.perform(get("/beers/find/"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void findByUPCRoleAdmin() throws Exception{
+        mockMvc.perform(get("/api/v1/beerUpc/0631234200036")
+                .with(httpBasic("spring", "guru")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findByUPCRoleCustomer() throws Exception{
+        mockMvc.perform(get("/api/v1/beerUpc/0631234200036")
+                .with(httpBasic("scott", "tiger")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findByUPCRoleUser() throws Exception{
+        mockMvc.perform(get("/api/v1/beerUpc/0631234200036")
+                .with(httpBasic("user", "password")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findByUPCRoleAnonymous() throws Exception{
+        mockMvc.perform(get("/api/v1/beerUpc/0631234200036"))
+                .andExpect(status().isUnauthorized());
+    }
+
 
     @Test
     void findBeerById() throws Exception{
