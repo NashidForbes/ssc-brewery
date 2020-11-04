@@ -70,7 +70,7 @@ public class BeerOrderController {
         return beerOrderService.placeOrder(customerId, beerOrderDto);
     }
 
-    @BeerOrderCreatePermission
+    @BeerOrderReadPermission
     @GetMapping("orders/{orderId}")
     public BeerOrderDto getOrder(@PathVariable("customerId") UUID customerId,
                                  @PathVariable("orderId") UUID orderId) {

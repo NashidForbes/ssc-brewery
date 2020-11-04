@@ -12,7 +12,6 @@ import guru.sfg.brewery.web.controllers.BaseIT;
 import guru.sfg.brewery.web.model.BeerOrderDto;
 import guru.sfg.brewery.web.model.BeerOrderLineDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,8 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -52,22 +50,28 @@ class BeerOrderControllerTest extends BaseIT {
 
     @BeforeEach
     void setUp() {
-        stPeteCustomer = customerRepository.findAllByCustomerName(DefaultBreweryLoader.ST_PETE_DISTRIBUTING).orElseThrow();
-        dunedinCustomer = customerRepository.findAllByCustomerName(DefaultBreweryLoader.DUNEDIN_DISTRIBUTING).orElseThrow();
-        keyWestCustomer = customerRepository.findAllByCustomerName(DefaultBreweryLoader.KEY_WEST_DISTRIBUTORS).orElseThrow();
+        stPeteCustomer = customerRepository
+                .findAllByCustomerName(DefaultBreweryLoader.ST_PETE_DISTRIBUTING)
+                .orElseThrow();
+        dunedinCustomer = customerRepository
+                .findAllByCustomerName(DefaultBreweryLoader.DUNEDIN_DISTRIBUTING)
+                .orElseThrow();
+        keyWestCustomer = customerRepository
+                .findAllByCustomerName(DefaultBreweryLoader.KEY_WEST_DISTRIBUTORS)
+                .orElseThrow();
         loadedBeers = beerRepository.findAll();
     }
-
-//cant use nested tests bug - https://github.com/spring-projects/spring-security/issues/8793
-//    @DisplayName("Create Test")
-//    @Nested
-//    class createOrderTests {
+    //cant use nested tests bug - https://github
+    // .com/spring-projects/spring-security/issues/8793
+    //    @DisplayName("Create Test")
+    //    @Nested
+    //    class createOrderTests {
 
 
     @Test
     void createOrderNotAuth() throws Exception {
-        BeerOrderDto beerOrderDto = buildOrderDto(stPeteCustomer, loadedBeers.get(0).getId());
-
+        BeerOrderDto beerOrderDto =
+                buildOrderDto(stPeteCustomer, loadedBeers.get(0).getId());
         mockMvc.perform(post(API_ROOT + stPeteCustomer.getId() + "/orders")
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -79,8 +83,8 @@ class BeerOrderControllerTest extends BaseIT {
     @WithUserDetails("spring")
     @Test
     void createOrderUserAdmin() throws Exception {
-        BeerOrderDto beerOrderDto = buildOrderDto(stPeteCustomer, loadedBeers.get(0).getId());
-
+        BeerOrderDto beerOrderDto =
+                buildOrderDto(stPeteCustomer, loadedBeers.get(0).getId());
         mockMvc.perform(post(API_ROOT + stPeteCustomer.getId() + "/orders")
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -92,8 +96,8 @@ class BeerOrderControllerTest extends BaseIT {
     @WithUserDetails(DefaultBreweryLoader.STPETE_USER)
     @Test
     void createOrderUserAuthCustomer() throws Exception {
-        BeerOrderDto beerOrderDto = buildOrderDto(stPeteCustomer, loadedBeers.get(0).getId());
-
+        BeerOrderDto beerOrderDto =
+                buildOrderDto(stPeteCustomer, loadedBeers.get(0).getId());
         mockMvc.perform(post(API_ROOT + stPeteCustomer.getId() + "/orders")
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -105,8 +109,8 @@ class BeerOrderControllerTest extends BaseIT {
     @WithUserDetails(DefaultBreweryLoader.KEYWEST_USER)
     @Test
     void createOrderUserNOTAuthCustomer() throws Exception {
-        BeerOrderDto beerOrderDto = buildOrderDto(stPeteCustomer, loadedBeers.get(0).getId());
-
+        BeerOrderDto beerOrderDto =
+                buildOrderDto(stPeteCustomer, loadedBeers.get(0).getId());
         mockMvc.perform(post(API_ROOT + stPeteCustomer.getId() + "/orders")
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -152,9 +156,10 @@ class BeerOrderControllerTest extends BaseIT {
     @Transactional
     @Test
     void getByOrderIdNotAuth() throws Exception {
-        BeerOrder beerOrder = stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
-
-        mockMvc.perform(get(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId()))
+        BeerOrder beerOrder =
+                stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
+        mockMvc.perform(
+                get(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId()))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -162,9 +167,10 @@ class BeerOrderControllerTest extends BaseIT {
     @WithUserDetails("spring")
     @Test
     void getByOrderIdADMIN() throws Exception {
-        BeerOrder beerOrder = stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
-
-        mockMvc.perform(get(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId()))
+        BeerOrder beerOrder =
+                stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
+        mockMvc.perform(
+                get(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId()))
                 .andExpect(status().is2xxSuccessful());
     }
 
@@ -172,9 +178,10 @@ class BeerOrderControllerTest extends BaseIT {
     @WithUserDetails(DefaultBreweryLoader.STPETE_USER)
     @Test
     void getByOrderIdCustomerAuth() throws Exception {
-        BeerOrder beerOrder = stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
-
-        mockMvc.perform(get(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId()))
+        BeerOrder beerOrder =
+                stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
+        mockMvc.perform(
+                get(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId()))
                 .andExpect(status().is2xxSuccessful());
     }
 
@@ -182,31 +189,74 @@ class BeerOrderControllerTest extends BaseIT {
     @WithUserDetails(DefaultBreweryLoader.DUNEDIN_USER)
     @Test
     void getByOrderIdCustomerNOTAuth() throws Exception {
-        BeerOrder beerOrder = stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
-
-        mockMvc.perform(get(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId()))
+        BeerOrder beerOrder =
+                stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
+        mockMvc.perform(
+                get(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId()))
                 .andExpect(status().isForbidden());
     }
 
-    @Disabled
+    @Transactional
     @Test
-    void pickUpOrderNotAuth() {
+    void pickUpOrderNotAuth() throws Exception {
+        BeerOrder beerOrder =
+                stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
+        mockMvc.perform(
+                put(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId() +
+                        "/pickup"))
+                .andExpect(status().isUnauthorized());
     }
 
-    @Disabled
+
+    @Transactional
+    @WithUserDetails("spring")
     @Test
-    void pickUpOrderNotAdminUser() {
+    void pickUpOrderAdmin() throws Exception {
+        BeerOrder beerOrder =
+                stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
+        mockMvc.perform(
+                put(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId() +
+                        "/pickup"))
+                .andExpect(status().isNoContent());
     }
 
-    @Disabled
+
+    @Transactional
+    @WithUserDetails(value = DefaultBreweryLoader.DUNEDIN_USER)
     @Test
-    void pickUpOrderCustomerUserAUTH() {
+    void pickUpOrderNotAdminUser() throws Exception {
+        BeerOrder beerOrder =
+                stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
+        mockMvc.perform(
+                put(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId() +
+                        "/pickup"))
+                .andExpect(status().isForbidden());
     }
 
-    @Disabled
+    @Transactional
+    @WithUserDetails(value = DefaultBreweryLoader.STPETE_USER)
     @Test
-    void pickUpOrderCustomerUserNOT_AUTH() {
+    void pickUpOrderCustomerUserAUTH() throws Exception {
+        BeerOrder beerOrder =
+                stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
+        mockMvc.perform(
+                put(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId() +
+                        "/pickup"))
+                .andExpect(status().is2xxSuccessful());
     }
+
+    @Transactional
+    @WithUserDetails(value = DefaultBreweryLoader.DUNEDIN_USER)
+    @Test
+    void pickUpOrderCustomerUserNOT_AUTH() throws Exception {
+        BeerOrder beerOrder =
+                stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
+        mockMvc.perform(
+                put(API_ROOT + stPeteCustomer.getId() + "/orders/" + beerOrder.getId() +
+                        "/pickup"))
+                .andExpect(status().isForbidden());
+    }
+
 
     private BeerOrderDto buildOrderDto(Customer customer, UUID beerId) {
         List<BeerOrderLineDto> orderLines = Arrays.asList(BeerOrderLineDto.builder()
@@ -214,7 +264,6 @@ class BeerOrderControllerTest extends BaseIT {
                 .beerId(beerId)
                 .orderQuantity(5)
                 .build());
-
         return BeerOrderDto.builder()
                 .customerId(customer.getId())
                 .customerRef("123")
