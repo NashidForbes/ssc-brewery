@@ -16,10 +16,12 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Entity
-public class LoginSuccess {
+public class LoginFailure {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    private String userName;
 
     @ManyToOne
     private User user;
